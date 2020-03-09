@@ -24,19 +24,19 @@ To use this project, you are going to need;
 
  1 Project Overview
 -------------------
-- [Entry Point](https://github.com/Ragavishalini1/AgoraShoppingApplicationRepo/blob/master/src/main/java/com/agora/api/AgoraShoppingApplication.java)
+- [Entry Point](https://github.com/Ragavishalini1/AgoraShoppingApplicationProjectRepo/blob/master/src/main/java/com/agora/api/AgoraShoppingApplication.java)
 
-- [controller package](https://github.com/Ragavishalini1/AgoraShoppingApplicationRepo/tree/master/src/main/java/com/agora/api/controller)
+- [controller package](https://github.com/Ragavishalini1/AgoraShoppingApplicationProjectRepo/tree/master/src/main/java/com/agora/api/controller)
 
    - AgoraShoppingController holds the API request mappings for (Getting Product Details and Placing Order)
 
-- [service package](https://github.com/Ragavishalini1/AgoraShoppingApplicationRepo/tree/master/src/main/java/com/agora/api/service)
+- [service package](https://github.com/Ragavishalini1/AgoraShoppingApplicationProjectRepo/tree/master/src/main/java/com/agora/api/service)
 
 - AgoraShoppingService class holds the business logic of fething the actual product from database and calculating the total amount based on offers and discounts.
 
-- [repository package](https://github.com/Ragavishalini1/AgoraShoppingApplicationRepo/tree/master/src/main/java/com/agora/api/data)
+- [repository package](https://github.com/Ragavishalini1/AgoraShoppingApplicationProjectRepo/tree/master/src/main/java/com/agora/api/data)
 
-- [model package](https://github.com/Ragavishalini1/AgoraShoppingApplicationRepo/tree/master/src/main/java/com/agora/api/model)
+- [model package](https://github.com/Ragavishalini1/AgoraShoppingApplicationProjectRepo/tree/master/src/main/java/com/agora/api/model)
 
 - There are three entity classes.
 - Product - Holds the list of Products
