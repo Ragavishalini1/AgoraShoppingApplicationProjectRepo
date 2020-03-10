@@ -24,6 +24,13 @@ import com.agora.api.model.Product;
 import com.agora.api.service.AgoraShoppingService;
 import com.agora.api.validation.AgoraBusinessValidation;
 
+/**
+ * 
+ * @author ragavishalini
+ * 
+ * This Service class holds the business logic for the processing of order
+ *
+ */
 @Service
 public class AgoraShoppingServiceImpl implements AgoraShoppingService {
 
@@ -45,6 +52,9 @@ public class AgoraShoppingServiceImpl implements AgoraShoppingService {
 	
 	private Logger log = Logger.getLogger("AgoraShoppingServiceImpl");
 
+	/**
+	 * To retrieve all the available products
+	 */
 	@Override
 	public List<Product> retrieveAllProducts() {
 		
@@ -55,6 +65,9 @@ public class AgoraShoppingServiceImpl implements AgoraShoppingService {
 		return listOfProducts;
 	}
 
+	/**
+	 * Processes the order based on the Item Code and Quantity
+	 */
 	@Override
 	public BillResponse processOrder(List<ProductItem> productItemList) {
 		
@@ -92,7 +105,16 @@ public class AgoraShoppingServiceImpl implements AgoraShoppingService {
 
 		return billResponse;
 	}
-
+	
+	/**
+	 * calculateTotalAmountWithoutOfferAndDiscount() calculates the total Amount without discount.
+	 * 
+	 * It validates if the item code and quantity provided are valid.
+	 * If Valid it processes the order .
+	 * 
+	 * @param productItemList
+	 * @return
+	 */
 	private BigDecimal calculateTotalAmountWithoutOfferAndDiscount(List<ProductItem> productItemList) {
 		BigDecimal totalAmount = new BigDecimal(0);
 		productMap = new HashMap<Integer,Product>();
@@ -129,6 +151,12 @@ public class AgoraShoppingServiceImpl implements AgoraShoppingService {
 		return totalAmount;
 	}
 
+	/**
+	 * updateInventory() updates the stock in the inventory based on the input quantity
+	 * 
+	 * @param inputItemQuantity
+	 * @param product
+	 */
 	private void updateInventory(float inputItemQuantity, Optional<Product> product) {
 		
 		Inventory inventoryItem = agoraInventoryRepo.findByProductId(product.get());
@@ -138,6 +166,13 @@ public class AgoraShoppingServiceImpl implements AgoraShoppingService {
 		agoraInventoryRepo.save(inventoryItem);
 	}
 
+	/**
+	 * checkEligibilityAndReturnDiscountAmount() checks if the item is eligible for any offer.
+	 * 
+	 * Also it checks if the order is eligible for discounts
+	 * 
+	 * @return
+	 */
 	private double checkEligibilityAndReturnDiscountAmount() {
 		
 		if (!productMap.isEmpty()) {
@@ -183,7 +218,13 @@ public class AgoraShoppingServiceImpl implements AgoraShoppingService {
 		return discountApplied;
 	}
 
-
+	/**
+	 * constructs the bill response output to display 
+	 * 
+	 * @param totalAmount
+	 * @param actualAmount
+	 * @return
+	 */
 	private BillResponse constructBillResponse(BigDecimal totalAmount,
 			BigDecimal actualAmount) {
 		
