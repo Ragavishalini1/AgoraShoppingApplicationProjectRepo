@@ -145,7 +145,7 @@ Sample Output;
 ```
  3.Handled below test cases with code coverage of 90 percent
 --------------------------------------------------------------------------------
-[AgoraShoppingApplicationIT](https://github.com/Ragavishalini1/AgoraShoppingApplicationMaster/tree/master/src/main/java/com/agora/api/service)
+[AgoraShoppingApplicationIT](https://github.com/Ragavishalini1/AgoraShoppingApplicationProjectRepo/blob/master/src/test/java/com/agora/api/AgoraShoppingApplicationIT.java)
 - Retrieve List of Products
 -  Place Order For One Product
 -  Place Order for Product with offer 5 percent discount
