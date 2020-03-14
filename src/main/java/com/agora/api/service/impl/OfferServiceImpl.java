@@ -25,10 +25,6 @@ public class OfferServiceImpl implements IOfferService{
 
 			switch (offerId) {
 
-			case B1G1: {
-				// buyOneGetOneItemList.add(firstProductWithOffer.getValue());
-				break;
-			}
 			case DISC5: {
 				discountApplied = FIVE_PERCENT;
 				break;

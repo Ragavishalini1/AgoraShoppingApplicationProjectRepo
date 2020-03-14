@@ -11,12 +11,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.agora.api.common.CostCalculator;
 import com.agora.api.controller.dto.ErrorResponse;
 import com.agora.api.controller.dto.ProductItemRequest;
 import com.agora.api.controller.dto.ProductItemResponse;
 import com.agora.api.data.AgoraProductRepository;
 import com.agora.api.model.Product;
-import com.agora.api.service.ICalculationService;
 import com.agora.api.service.IInventoryService;
 import com.agora.api.service.IOfferService;
 import com.agora.api.service.IProductService;
@@ -27,9 +27,6 @@ public class ProductServiceImpl implements IProductService{
 	
 	@Autowired
 	public IInventoryService inventoryService;
-	
-	@Autowired
-	public ICalculationService calculateService;
 	
 	@Autowired
 	public IOfferService offerService;
@@ -66,7 +63,7 @@ public class ProductServiceImpl implements IProductService{
 			productMap.put(productItem.getItemId(), product.get());
 			
 			
-			totalAmount =  totalAmount.add(calculateService.calculateTotalamountWithoutDisc(inputItemQuantity, product.get()));
+			totalAmount =  totalAmount.add(CostCalculator.calculateTotalamount(inputItemQuantity, product.get()));
 			
 			
 			inventoryService.updateInventory(inputItemQuantity, product);
@@ -79,9 +76,7 @@ public class ProductServiceImpl implements IProductService{
 		
 		
 		if (discountApplied != 0.0) {
-			BigDecimal discountCalculated = (totalAmount.multiply(new BigDecimal(discountApplied)))
-					.divide(new BigDecimal(100));
-			totalAmount = totalAmount.subtract(discountCalculated);
+			totalAmount = CostCalculator.calculateAmountApplyingDiscount(totalAmount, discountApplied);
 		}
 		
 		ProductItemResponse productResponse = constructProductResponse(totalAmount, actualAmountwithoutDiscount,
