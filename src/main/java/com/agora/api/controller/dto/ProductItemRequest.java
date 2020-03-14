@@ -1,15 +1,15 @@
 package com.agora.api.controller.dto;
 
-public class ProductItem {
+public class ProductItemRequest {
 	
 	private int itemId;
 	private float quantity;
 	
-	public ProductItem() {
+	public ProductItemRequest() {
 		
 	}
 	
-	public ProductItem(int itemId, float quantity) {
+	public ProductItemRequest(int itemId, float quantity) {
 		
 		this.itemId = itemId;
 		this.quantity = quantity;

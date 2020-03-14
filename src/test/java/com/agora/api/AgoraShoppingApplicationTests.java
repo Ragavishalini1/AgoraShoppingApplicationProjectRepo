@@ -1,9 +1,12 @@
 package com.agora.api;
 
 import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -23,10 +26,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.agora.api.controller.AgoraShoppingController;
 import com.agora.api.controller.dto.BillResponse;
-import com.agora.api.controller.dto.ProductItem;
+import com.agora.api.controller.dto.OrderRequest;
+import com.agora.api.controller.dto.ProductItemRequest;
+import com.agora.api.controller.dto.ProductItemResponse;
 import com.agora.api.data.AgoraProductRepository;
 import com.agora.api.model.Product;
-import com.agora.api.service.AgoraShoppingService;
+import com.agora.api.service.IAgoraShoppingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 
@@ -41,7 +46,7 @@ class AgoraShoppingApplicationTests {
     private ObjectMapper objectMapper;
 	
 	@MockBean
-	private AgoraShoppingService agoraBusinessService;
+	private IAgoraShoppingService agoraBusinessService;
 	
 	@MockBean
 	private AgoraProductRepository agoraBusinessData;
@@ -72,32 +77,34 @@ class AgoraShoppingApplicationTests {
 	@Test
 	void testPlaceOrder() throws Exception {
 		
-		List<ProductItem> productItemList = new ArrayList<ProductItem>();
-		
-		ProductItem productItem = new ProductItem();
-		productItem.setItemId(1);
-		productItem.setQuantity(0.5f);
-		
-		productItemList.add(productItem);
-		
-		String jsonInput = toJson(ImmutableMap.of("selectedItemList",productItemList));
+		OrderRequest orderRequest = new OrderRequest();
+		List<ProductItemRequest> productItemList = new ArrayList<ProductItemRequest>();
+		ProductItemRequest item= new ProductItemRequest(100,0.5f);
+		productItemList.add(item);
+		orderRequest.setSelectedItemList(productItemList);
+
+		String jsonInput = toJson(orderRequest);
 		
 		BillResponse billResponse = new BillResponse();
-		billResponse.setNoOfItems(1);
-		billResponse.setActualAmountToPay(new BigDecimal(10));
-		billResponse.setDiscountApplied(new BigDecimal(0));
-		billResponse.setOfferApplied(null);
-		billResponse.setAmountAfterDiscount(new BigDecimal(10));
+		
+		ProductItemResponse productResponse = new ProductItemResponse();
+		productResponse.setTotalNumberOfItems(1);
+		productResponse.setActualAmountToPay(new BigDecimal(10));
+		productResponse.setTotalAmount(new BigDecimal(10));
+		
 		billResponse.setOrderId("1");
+		billResponse.setProductItemResponse(productResponse);
 		
 		String jsonOutput = toJson(ImmutableMap.of("noOfItems",1,"orderId",1));
 		
-		when(agoraBusinessService.processOrder(productItemList)).thenReturn(billResponse);
+		when(agoraBusinessService.processOrder(any(OrderRequest.class))).thenReturn(billResponse);
 
 		mockMVC.perform(post("/agora/order").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(jsonInput)).
 				andDo(print()).
-				andExpect(status().isOk());
-		
+				andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).
+				andExpect(status().isOk()).
+				andExpect(jsonPath("$.orderId", is("1")));
+	
 	}
 	
 	private String toJson(Object o) throws Exception {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agora.api.controller.dto.BillResponse;
 import com.agora.api.controller.dto.OrderRequest;
 import com.agora.api.model.Product;
-import com.agora.api.service.AgoraShoppingService;
+import com.agora.api.service.IAgoraShoppingService;
 
 /**
  * 
@@ -32,7 +33,7 @@ import com.agora.api.service.AgoraShoppingService;
 public class AgoraShoppingController {
 	
 	@Autowired
-	private AgoraShoppingService agoraBusinessService;
+	private IAgoraShoppingService agoraBusinessService;
 	
 	/**
 	 * @return List<Product> - Retuens List of Products
@@ -47,6 +48,21 @@ public class AgoraShoppingController {
 	}
 	
 	/**
+	 * Return Product By Id
+	 * 
+	 * @param productId
+	 * @return
+	 */
+	@GetMapping("/products/{productId}")
+	public Product retrieveProductById(@PathVariable("productId") String productId) {
+		
+		Product product = agoraBusinessService.retrieveProductByProductId(Integer.parseInt(productId));
+		
+		return product;
+		
+	}
+	
+	/**
 	 * 
 	 * @param orderRequest - Item Id and Quantity
 	 * @return BillResponse
@@ -55,7 +71,7 @@ public class AgoraShoppingController {
 	@ResponseBody
 	public BillResponse placeOrder(@RequestBody OrderRequest orderRequest) {
 		
-		BillResponse billResponse = agoraBusinessService.processOrder(orderRequest.getSelectedItemList());
+		BillResponse billResponse = agoraBusinessService.processOrder(orderRequest);
 		
 		return billResponse;
 		

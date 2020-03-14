@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.agora.api.controller.dto.ErrorResponse;
-import com.agora.api.controller.dto.ProductItem;
+import com.agora.api.controller.dto.ProductItemRequest;
 
 public class AgoraBusinessValidation {
 	
-	public static List<ErrorResponse> itemCodeAndQuantityValidation(boolean isProductPresent, ProductItem productItem) {
+	
+	public static List<ErrorResponse> itemCodeAndQuantityValidation(boolean isProductPresent, ProductItemRequest productItem) {
 		
 		List<ErrorResponse> errorResponseList = new ArrayList<>();
 		

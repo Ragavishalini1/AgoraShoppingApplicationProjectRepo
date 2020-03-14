@@ -12,5 +12,7 @@ public interface AgoraInventoryRepository extends JpaRepository<Inventory,Intege
 	
 	
 	public Inventory findByProductId(@Param("productId") Product productId);
+	
+	public Inventory findByProductIdProductName(String productName);
 
 }

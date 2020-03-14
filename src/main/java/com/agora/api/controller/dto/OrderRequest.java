@@ -5,13 +5,13 @@ import java.util.List;
 
 public class OrderRequest {
 	
-	private List<ProductItem> selectedItemList;
+	private List<ProductItemRequest> selectedItemList;
 
-	public List<ProductItem> getSelectedItemList() {
+	public List<ProductItemRequest> getSelectedItemList() {
 		return selectedItemList;
 	}
 
-	public void setSelectedItemList(List<ProductItem> selectedItemList) {
+	public void setSelectedItemList(List<ProductItemRequest> selectedItemList) {
 		this.selectedItemList = selectedItemList;
 	}
 
